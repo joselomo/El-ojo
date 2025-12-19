@@ -26,7 +26,6 @@
       --ok: #7CFFB2;
     }
 
-    /* ===== LAYOUT ===== */
     body {
       margin: 0;
       min-height: 100vh;
@@ -40,7 +39,6 @@
       letter-spacing: 0.2px;
     }
 
-    /* “Tarjeta” elegante sobre negro */
     .panel {
       width: 100%;
       max-width: 820px;
@@ -56,7 +54,6 @@
       position: relative;
     }
 
-    /* Detalle sutil arriba */
     .panel::before {
       content: "";
       position: absolute;
@@ -68,7 +65,6 @@
       pointer-events: none;
     }
 
-    /* ===== TÍTULO ===== */
     h1 {
       margin: 0 0 18px 0;
       text-align: center;
@@ -80,7 +76,6 @@
       opacity: 0.95;
     }
 
-    /* ===== TEXTO ===== */
     #question {
       font-size: 1.15rem;
       line-height: 1.6;
@@ -88,7 +83,6 @@
       margin: 18px 0 10px;
     }
 
-    /* ===== INPUT + BOTÓN ===== */
     .row {
       display: flex;
       gap: 12px;
@@ -142,13 +136,13 @@
       transform: translateY(1px);
     }
 
-    /* ===== MENSAJES ===== */
     #msg {
       margin-top: 14px;
       min-height: 1.2em;
       font-style: italic;
       color: var(--muted);
       line-height: 1.4;
+      word-break: break-word;
     }
 
     .error {
@@ -162,7 +156,6 @@
       font-weight: 400;
     }
 
-    /* Responsivo */
     @media (max-width: 520px) {
       .panel { padding: 26px 18px 20px; }
       h1 { letter-spacing: 4px; font-size: 1.35rem; }
@@ -186,6 +179,15 @@
 
   <script type="py">
 from pyscript import document, when
+
+# ===== PÁGINA INICIAL (NUEVO) =====
+WELCOME_TEXT = """
+<p>Bienvenido al reto de El Ojo..</p>
+<p>A continuación tendrás que responder una serie de enigmas. Responde con calma. No hay prisa.</p>
+<p>El premio aguarda al final. Cuando estés listo, pulsa <em>Aceptar</em>.</p>
+"""
+started = False
+# ================================
 
 QUIZ = [
     {"q": "Venga, empecemos con uno sencillito:<br><br>"
@@ -221,11 +223,11 @@ QUIZ = [
     "Si solo puede haber una persona por barco y hace el mismo viento en todos los puntos del recorrido, ¿qué hermano llegará primero?", "a": "D"},
 ]
 
-
 i = 0
 question = document.querySelector("#question")
 answer = document.querySelector("#answer")
 msg = document.querySelector("#msg")
+btn = document.querySelector("#btn")
 
 def normalizar(s):
     s = (s or "").strip().lower()
@@ -234,18 +236,35 @@ def normalizar(s):
              .replace("ñ","n"))
 
 def mostrar():
-    global i
+    global i, started
+    if not started:
+        question.innerHTML = WELCOME_TEXT
+        msg.innerHTML = ""
+        answer.style.display = "none"
+        btn.innerText = "Aceptar"
+        return
+
     if i < len(QUIZ):
         question.innerHTML = QUIZ[i]["q"]
         msg.innerHTML = ""
         answer.value = ""
+        answer.style.display = "block"
+        btn.innerText = "Enviar"
         answer.focus()
     else:
         question.innerHTML = "¡Felicidades! Has completado el reto. Copia y pega en la barra de búsqueda el siguiente link completo y disfruta de tu regalo. El amor 😘."
-        msg.innerHTML = "<span class='success'>https://ees-p.s3-eu-west-1.amazonaws.com/pdf/314445979.pdf?AWSAccessKeyId=AKIAIECPCKX366QJPJZQ&Expires=1831892755&Signature=p%2ByeaTk1uC0ZkIMTIhUQuXGIBCY%3D"
+        msg.innerHTML = "<span class='success'>https://ees-p.s3-eu-west-1.amazonaws.com/pdf/314445979.pdf?AWSAccessKeyId=AKIAIECPCKX366QJPJZQ&Expires=1831892755&Signature=p%2ByeaTk1uC0ZkIMTIhUQuXGIBCY%3D</span>"
+        answer.style.display = "none"
+        btn.innerText = "—"
 
 def validar():
-    global i
+    global i, started
+
+    if not started:
+        started = True
+        mostrar()
+        return
+
     if i >= len(QUIZ):
         return
 
