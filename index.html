@@ -225,12 +225,13 @@ QUIZ = [
 
     {
         "q": """<img src="imagen2.png"
-     style="max-width:100%;border-radius:10px;margin-top:12px;">
-    Para conmemorar la fecha de fundación de un pueblo, se encargó una escultura especial. Sin embargo, el escultor se equivocó al inscribir la fecha y el pueblo tuvo que vivir con ese error hasta que alguien se dio cuenta de que, con una ligera modificación, la escultura podía mostrar la fecha correcta.<br><br>
-    Piensa cómo se podría haber transformado la escultura y averigua la fecha en la que se fundó. Introduce los dos dígitos correspondientes al día, un espacio y los dos dígitos del mes.<br><br>
+     style="max-width:100%;border-radius:10px;margin-top:12px;">.<br><br>
+    Correcto! Ahora pasemos a la última.<br><br>
+    Hablando de fuentes, hay una muy famosa en la que los amantes de una película de Felini se funden en un beso.<br><br>
+    Escribe el nombre de la fuente (sin artículo).<br><br>
 
 """,
-        "a": "13 08"
+        "a": "FONTANA DI TREVI"
     },
 ]
 
@@ -263,10 +264,19 @@ def mostrar():
         btn.innerText = "Enviar"
         answer.focus()
     else:
-        question.innerHTML = "¡Felicidades! Has completado el reto. Copia y pega en la barra de búsqueda el siguiente link completo y disfruta de tu regalo. El amor 😘."
-        msg.innerHTML = "<span class='success'>https://ees-p.s3-eu-west-1.amazonaws.com/pdf/314445979.pdf?AWSAccessKeyId=AKIAIECPCKX366QJPJZQ&Expires=1831892755&Signature=p%2ByeaTk1uC0ZkIMTIhUQuXGIBCY%3D</span>"
-        answer.style.display = "none"
-        btn.innerText = "—"
+        question.innerHTML = "¡Felicidades! Has completado el reto. Copia y pega en la barra de búsqueda el siguiente link completo y disfruta de tu regalo. El amor 😘.";
+
+msg.innerHTML = `
+  <span class='success'>
+    https://ees-p.s3-eu-west-1.amazonaws.com/pdf/314445979.pdf?AWSAccessKeyId=AKIAIECPCKX366QJPJZQ&Expires=1831892755&Signature=p%2ByeaTk1uC0ZkIMTIhUQuXGIBCY%3D
+  </span>
+  <br><br>
+  <img src="imagen3.jpg" alt="Regalo" width="200">
+`;
+
+answer.style.display = "none";
+btn.innerText = "—";
+
 
 def validar():
     global i, started
